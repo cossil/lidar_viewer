@@ -89,7 +89,7 @@ def classify(
     min_returns_reliable: int = 5,
     min_returns_characterized: int = 10,
     min_coverage: float = 0.3,
-    sigma_R_threshold: float = 0.1,
+    sigma_R_threshold: float = 0.05,
     detection_threshold: float = 0.5,
     reliable_threshold: float = 0.9,
     characterized_threshold: float = 0.9,

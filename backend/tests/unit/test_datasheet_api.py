@@ -116,3 +116,35 @@ def test_routes_registered():
     paths = {getattr(r, "path", None) for r in datasheets.router.routes}
     assert "/extract" in paths
     assert "/{extraction_id}/validate" in paths
+
+
+def test_extract_with_llm_option(client, monkeypatch):
+    from lidar_analysis.ingestion import llm_extractor
+
+    def mock_extract(raw_text, model="z-ai/glm-5.3-flash", api_key=None):
+        return {
+            "sensor_id": "mock-lidar-llm",
+            "manufacturer": "AI Sensors Inc",
+            "model": "Flash-1",
+            "version": "1.0.0",
+            "range": {"maximum": {"value": 150.0, "unit": "m"}},
+            "scan": {"point_rate": {"value": 300000.0, "unit": "Hz"}},
+        }
+
+    monkeypatch.setattr(llm_extractor, "extract_with_openrouter", mock_extract)
+
+    payload = {
+        "filename": "mock_datasheet.txt",
+        "content_type": "text/plain",
+        "data": {"text": "LiDAR specs text..."},
+        "use_llm": True,
+        "llm_model": "z-ai/glm-5.3-flash",
+    }
+    resp = client.post("/api/datasheets/extract", json=payload)
+    assert resp.status_code == 200
+    body = resp.json()
+    assert body["status"] == "completed"
+    assert body["llm_used"] is True
+    assert body["llm_model"] == "z-ai/glm-5.3-flash"
+    assert body["sensor_candidate"]["sensor_id"] == "mock-lidar-llm"
+    assert body["sensor_candidate"]["range"]["maximum"]["value"] == 150.0

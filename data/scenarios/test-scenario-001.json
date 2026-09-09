@@ -1,0 +1,45 @@
+{
+  "scenario_id": "test-scenario-001",
+  "name": null,
+  "sensor_id": "hesai-qt64",
+  "sensor_pose": {
+    "position": [
+      0.0,
+      0.0,
+      1.5
+    ],
+    "orientation": {
+      "yaw": 0.0,
+      "pitch": 0.0,
+      "roll": 0.0
+    }
+  },
+  "target": {
+    "type": "cylinder",
+    "position": [
+      30.0,
+      0.0,
+      0.5
+    ],
+    "orientation": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "width": null,
+    "depth": null,
+    "height": null,
+    "diameter": 0.1,
+    "reflectivity": 0.3
+  },
+  "environment": {
+    "atmosphere": "clear",
+    "rain": false,
+    "fog": false,
+    "dust": false,
+    "vegetation_occlusion": false,
+    "terrain_occlusion": false
+  },
+  "randomization": null,
+  "application_profile_id": null
+}

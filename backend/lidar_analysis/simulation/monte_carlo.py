@@ -102,7 +102,7 @@ class MonteCarloEngine:
         min_returns_reliable: int = 5,
         min_returns_characterized: int = 10,
         min_coverage_characterized: float = 0.3,
-        sigma_R_threshold: float = 0.1,
+        sigma_R_threshold: float = 0.05,
         reliable_confidence: float = 0.9,
         characterized_confidence: float = 0.9,
         keep_trials: bool = False,

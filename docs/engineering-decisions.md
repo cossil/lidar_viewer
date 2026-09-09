@@ -79,4 +79,12 @@ results.metrics.range_uncertainty = range_sigma when known (after converting def
 All endpoints under /api/v1 (SCHEMAS §12,§28.. OpenAPI served at /openapi.json. Breaking change -> /api/v2.,
 
 ## D025 - Datasheet extraction is non-fabricating
-Extractor uses regex/unit-aware parsers + optional AI hints; every produced parameter carries provenance(document cannot be fabricated; page/section null when unknown,. Output is a Sensor-CANDIDATE with validation.status=unvalidated,and per-param provenance. PRD §11-12] + SCHEMAS §14. Warnings list un-identified required params.,
+Extractor uses regex/unit-aware parsers + optional AI hints; every produced parameter carries provenance(document cannot be fabricated; page/section null when unknown,. Output is a Sensor-CANDIDATE with validation.status=unvalidated,and per-param provenance. PRD §11-12] + SCHEMAS §14. Warnings list un-identified required params.
+
+## D026 - OpenRouter LLM Ingestion with `z-ai/glm-5.3-flash`
+Datasheet extraction supports optional LLM-assisted parsing via OpenRouter using the model `z-ai/glm-5.3-flash` (`backend/lidar_analysis/ingestion/llm_extractor.py`).
+- Resolves `OPENROUTER_API_KEY` from environment variables or local user configuration (`%LOCALAPPDATA%\\hermes\\.env`).
+- System prompt strictly enforces Rule 1 (Zero Fabrication). Parameters not explicitly stated in the datasheet are omitted or set to null, never invented.
+- Outputs structured sensor candidates compatible with `Sensor.model_validate` and tracks parameter provenance.
+- The UI provides an intuitive toggle in the Datasheet Upload modal to enable LLM extraction with `z-ai/glm-5.3-flash`.
+,

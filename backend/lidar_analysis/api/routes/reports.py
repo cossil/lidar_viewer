@@ -48,18 +48,21 @@ def create_report(request: ReportRequest):
         )
 
     report_id = f"report_{uuid.uuid4().hex[:8]}"
-    _REPORTS[report_id] = {
+    report_entry = {
+        "report_id": report_id,
         "format": request.format,
         "body": body,
+        "status": "completed",
     }
+    store.put_report(report_id, report_entry)
     return {"report_id": report_id, "status": "completed", "format": request.format}
 
 
 @router.get("/{report_id}")
 def get_report(report_id: str):
-    if report_id not in _REPORTS:
+    entry = store.get_report(report_id)
+    if entry is None:
         raise HTTPException(status_code=404, detail=f"Report {report_id} not found")
-    entry = _REPORTS[report_id]
     return {
         "report_id": report_id,
         "status": "completed",

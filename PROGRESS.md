@@ -66,10 +66,26 @@ Modules: test_e2e.py (Level 2 synthetic validation, full pipeline, distance swee
 Tests: 7 tests covering PRD §64 Level 2 (ideal target → all detected, no intersection → zero detections, P_d=0 → zero detections), full pipeline (scan→intersect→detect→MC→classify→metrics→suitability→report), distance sweep e2e with CSV export, MC determinism, insufficient_data returns None.
 
 ## Phase 12 — Frontend web UI + Visualization
-pending
+✅ done & verified (Vite + React + TypeScript + Three.js + Plotly + Vanilla CSS design system).
+Modules:
+- `DashboardView`: Overview metrics, quick simulation runner, active sensor/scenario cards.
+- `SensorsView`: Parameter provenance inspector, version history, and Datasheet Ingestion modal with OpenRouter AI option.
+- `ScenariosView`: Tree target geometry, environment conditions, and mounting pose configuration.
+- `SimulationsView`: Simulation launcher, async job monitor, suitability assessment (§46), metrics cards.
+- `Plots2D`: Interactive Plotly curves (P_d vs Distance, Return Distribution, DBH vs Distance heatmap).
+- `Scene3D`: WebGL Three.js interactive 3D scene (emitter, target, laser rays, 3D point cloud).
+- `ReportsView`: 14-section formal Markdown report viewer with JSON, CSV, and Markdown exports.
 
-## Phase 13 — README + final verification
-pending
+## Phase 13 — OpenRouter LLM Ingestion & Gaps G1–G7
+✅ done & verified (251 unit tests green; 0 build errors).
+- **G1 (Disk JSON Persistence):** `<id>.v<version>.json` + `<id>.latest` pointers in `data/sensors/`, `data/scenarios/`, `data/simulations/`, `data/reports/`.
+- **G3 (Error Envelope §25):** `{"error": {"code", "message", "field", "details"}}` schema compliance.
+- **G4 (Async Simulation & WebSockets):** BackgroundTasks returning 202 immediately, status polling, cancellation, and WebSocket streaming.
+- **G5 (Angular Measurement):** Angular bias and sigma model parameters wired.
+- **G6 (§39 Defaults):** Default sigma_R threshold aligned to 0.05 m.
+- **G7 (Detection Model Registry):** Pluggable detection models registry (`datasheet_envelope`, `analytical_physics`, `empirical_calibrated`, `assumption_fixed`).
+- **OpenRouter LLM Datasheet Ingestion:** Ingestion with model `z-ai/glm-5.3-flash` resolving keys securely, enforcing zero hallucination (Rule 1), and integrated into API and Frontend UI.
+
 
 ---
 

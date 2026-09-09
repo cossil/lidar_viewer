@@ -1,2 +1,34 @@
+# Logs
 logs_uvicorn_*.log
 *.log
+
+# Python cache & bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+htmlcov/
+.venv/
+env/
+venv/
+
+# Environment variables & secrets
+.env
+.env.*
+!.env.example
+
+# Node / Frontend
+node_modules/
+frontend/node_modules/
+frontend/dist/
+
+# Ephemeral simulation & report run data
+data/simulations/sim_*.json
+data/reports/report_*.json
+
+# OS & Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

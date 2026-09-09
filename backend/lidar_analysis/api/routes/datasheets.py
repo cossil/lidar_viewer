@@ -22,6 +22,8 @@ class ExtractRequest(BaseModel):
     filename: str
     content_type: str
     data: Dict[str, Any] = {}
+    use_llm: bool = False
+    llm_model: str = "z-ai/glm-5.3-flash"
 
 
 class ValidateRequest(BaseModel):
@@ -36,15 +38,27 @@ def extract_datasheet(request: ExtractRequest):
         if "body" in extra and isinstance(extra["body"], dict):
             data = extra["body"]
         else:
-            data = {k: v for k, v in extra.items() if k not in ("filename", "content_type", "data")}
+            data = {k: v for k, v in extra.items() if k not in ("filename", "content_type", "data", "use_llm", "llm_model")}
     ctype = (request.content_type or "").lower()
     is_text = any(tok in ctype for tok in ("plain", "text", "pdf"))
     if is_text and isinstance(data.get("text"), str):
-        result = ingest_datasheet(data["text"], request.filename, request.content_type)
+        result = ingest_datasheet(
+            data["text"],
+            request.filename,
+            request.content_type,
+            use_llm=request.use_llm,
+            llm_model=request.llm_model,
+        )
     else:
         if isinstance(data, dict):
             data = {k: v for k, v in data.items() if k != "text"}
-        result = ingest_datasheet(data, request.filename, request.content_type)
+        result = ingest_datasheet(
+            data,
+            request.filename,
+            request.content_type,
+            use_llm=request.use_llm,
+            llm_model=request.llm_model,
+        )
     return result
 
 

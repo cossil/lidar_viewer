@@ -1,5 +1,6 @@
 """Datasheet ingestion (SCHEMAS section 14, POST /datasheets/extract)."""
 
+import json
 import re
 import secrets
 
@@ -189,17 +190,37 @@ def _reconstruct(candidate):
         return None
 
 
-def ingest_datasheet(data=None, filename="", content_type="application/json"):
+def ingest_datasheet(
+    data=None,
+    filename="",
+    content_type="application/json",
+    use_llm: bool = False,
+    llm_model: str = "z-ai/glm-5.3-flash",
+):
     ctype = (content_type or "").lower()
     warnings = []
     if data is None:
         data = {}
-    if ("json" in ctype) or isinstance(data, dict):
-        candidate = _candidate_from_dict(data, warnings)
-    elif any(tok in ctype for tok in ("pdf", "text", "txt", "plain")):
-        candidate = _candidate_from_text(data if isinstance(data, str) else "", warnings)
-    else:
-        candidate = _candidate_from_dict(data if isinstance(data, dict) else {}, warnings)
+
+    candidate = {}
+    if use_llm:
+        from .llm_extractor import extract_with_openrouter
+        try:
+            raw_text = data if isinstance(data, str) else (json.dumps(data) if isinstance(data, dict) else str(data))
+            llm_result = extract_with_openrouter(raw_text, model=llm_model)
+            candidate = _candidate_from_dict(llm_result, warnings)
+        except Exception as e:
+            warnings.append(f"LLM extraction error ({e}); falling back to standard parser.")
+            use_llm = False
+
+    if not candidate:
+        if ("json" in ctype) or isinstance(data, dict):
+            candidate = _candidate_from_dict(data, warnings)
+        elif any(tok in ctype for tok in ("pdf", "text", "txt", "plain")):
+            candidate = _candidate_from_text(data if isinstance(data, str) else "", warnings)
+        else:
+            candidate = _candidate_from_dict(data if isinstance(data, dict) else {}, warnings)
+
     built = _reconstruct(candidate)
     if built is not None:
         candidate = built
@@ -210,6 +231,8 @@ def ingest_datasheet(data=None, filename="", content_type="application/json"):
         "status": "completed",
         "sensor_candidate": candidate,
         "warnings": warnings,
+        "llm_used": use_llm,
+        "llm_model": llm_model if use_llm else None,
     }
     EXTRACTIONS[result["extraction_id"]] = result
     return result
