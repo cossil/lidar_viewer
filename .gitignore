@@ -1,0 +1,2 @@
+logs_uvicorn_*.log
+*.log
