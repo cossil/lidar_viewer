@@ -1,0 +1,223 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lidar-analysis.local/schema/scenario.json",
+  "title": "Simulation Scenario",
+  "type": "object",
+  "required": [
+    "scenario_id",
+    "sensor_id",
+    "environment",
+    "sensor_pose",
+    "target"
+  ],
+  "properties": {
+    "scenario_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "sensor_id": {
+      "type": "string"
+    },
+    "sensor_pose": {
+      "$ref": "#/$defs/pose"
+    },
+    "target": {
+      "$ref": "#/$defs/target"
+    },
+    "environment": {
+      "$ref": "#/$defs/environment"
+    },
+    "randomization": {
+      "$ref": "#/$defs/randomization"
+    },
+    "application_profile_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "pose": {
+      "type": "object",
+      "required": [
+        "position",
+        "orientation"
+      ],
+      "properties": {
+        "position": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "orientation": {
+          "type": "object",
+          "required": [
+            "yaw",
+            "pitch",
+            "roll"
+          ],
+          "properties": {
+            "yaw": {
+              "type": "number"
+            },
+            "pitch": {
+              "type": "number",
+              "minimum": -1.57079632679,
+              "maximum": 1.57079632679
+            },
+            "roll": {
+              "type": "number"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "target": {
+      "type": "object",
+      "required": [
+        "type",
+        "position",
+        "orientation",
+        "reflectivity"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "box",
+            "cylinder"
+          ]
+        },
+        "position": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "orientation": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "width": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        },
+        "depth": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        },
+        "height": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        },
+        "diameter": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0.05,
+          "maximum": 1.0
+        },
+        "reflectivity": {
+          "type": "number",
+          "minimum": 0.1,
+          "maximum": 1.0
+        }
+      },
+      "additionalProperties": false
+    },
+    "environment": {
+      "type": "object",
+      "required": [
+        "atmosphere",
+        "rain",
+        "fog",
+        "dust",
+        "vegetation_occlusion",
+        "terrain_occlusion"
+      ],
+      "properties": {
+        "atmosphere": {
+          "type": "string",
+          "enum": [
+            "clear"
+          ]
+        },
+        "rain": {
+          "type": "boolean",
+          "const": false
+        },
+        "fog": {
+          "type": "boolean",
+          "const": false
+        },
+        "dust": {
+          "type": "boolean",
+          "const": false
+        },
+        "vegetation_occlusion": {
+          "type": "boolean",
+          "const": false
+        },
+        "terrain_occlusion": {
+          "type": "boolean",
+          "const": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "randomization": {
+      "type": "object",
+      "properties": {
+        "sensor_pose": {
+          "type": "boolean"
+        },
+        "target_pose": {
+          "type": "boolean"
+        },
+        "reflectivity": {
+          "type": "boolean"
+        },
+        "scan_phase": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lidar-analysis.local/schema/application-profile.json",
+  "title": "Application Profile",
+  "type": "object",
+  "required": ["profile_id", "name", "target", "operational_range", "requirements"],
+  "properties": {
+    "profile_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "target": {
+      "type": "object",
+      "required": ["minimum_dbh", "maximum_dbh"],
+      "properties": {
+        "minimum_dbh": {
+          "type": "number",
+          "minimum": 0.05,
+          "maximum": 1.0
+        },
+        "maximum_dbh": {
+          "type": "number",
+          "minimum": 0.05,
+          "maximum": 1.0
+        }
+      },
+      "additionalProperties": false
+    },
+    "operational_range": {
+      "type": "object",
+      "required": ["minimum", "maximum"],
+      "properties": {
+        "minimum": {
+          "type": "number"
+        },
+        "maximum": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": false
+    },
+    "requirements": {
+      "type": "object",
+      "required": [
+        "minimum_detection_probability",
+        "minimum_reliable_probability",
+        "minimum_coverage",
+        "maximum_range_uncertainty"
+      ],
+      "properties": {
+        "minimum_detection_probability": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "minimum_reliable_probability": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "minimum_coverage": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "maximum_range_uncertainty": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

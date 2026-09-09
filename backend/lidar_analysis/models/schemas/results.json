@@ -1,0 +1,345 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lidar-analysis.local/schema/results.json",
+  "title": "Simulation Results",
+  "type": "object",
+  "required": [
+    "simulation_id",
+    "status",
+    "metrics",
+    "model_confidence"
+  ],
+  "properties": {
+    "simulation_id": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "completed",
+        "failed"
+      ]
+    },
+    "metrics": {
+      "$ref": "#/$defs/metrics"
+    },
+    "effective_ranges": {
+      "$ref": "#/$defs/effectiveRanges"
+    },
+    "model_confidence": {
+      "$ref": "#/$defs/modelConfidence"
+    },
+    "distribution": {
+      "$ref": "#/$defs/distribution"
+    },
+    "sweep": {
+      "$ref": "#/$defs/sweep"
+    },
+    "point_cloud": {
+      "$ref": "#/$defs/pointCloud"
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "metrics": {
+      "type": "object",
+      "properties": {
+        "detection_probability": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "reliable_probability": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "characterization_probability": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "expected_target_returns": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "geometric_coverage": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "target_angular_size": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "beam_footprint": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "incidence_angle": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1.57079632679
+        },
+        "range_uncertainty": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    },
+    "effectiveRanges": {
+      "type": "object",
+      "properties": {
+        "detection": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "reliable": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "characterization": {
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "modelConfidence": {
+      "type": "object",
+      "required": [
+        "physical_model"
+      ],
+      "properties": {
+        "physical_model": {
+          "type": "string",
+          "enum": [
+            "high",
+            "moderate",
+            "low",
+            "insufficient"
+          ]
+        },
+        "detection_model": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "high",
+            "moderate",
+            "low",
+            "insufficient",
+            null
+          ]
+        },
+        "monte_carlo_precision": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "high",
+            "moderate",
+            "low",
+            null
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "distribution": {
+      "type": "object",
+      "properties": {
+        "mean": {
+          "type": "number"
+        },
+        "median": {
+          "type": "number"
+        },
+        "std": {
+          "type": "number"
+        },
+        "min": {
+          "type": "number"
+        },
+        "max": {
+          "type": "number"
+        },
+        "p05": {
+          "type": "number"
+        },
+        "p25": {
+          "type": "number"
+        },
+        "p75": {
+          "type": "number"
+        },
+        "p95": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": false
+    },
+    "sweep": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "distance",
+            "dbh",
+            "reflectivity",
+            "incidence_angle"
+          ]
+        },
+        "parameter": {
+          "type": "string"
+        },
+        "values": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "results": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "pointCloud": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "points": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/point"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "point": {
+      "type": "object",
+      "required": [
+        "x",
+        "y",
+        "z"
+      ],
+      "properties": {
+        "x": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "z": {
+          "type": "number"
+        },
+        "true_range": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "measured_range": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "range_error": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "azimuth": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "elevation": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "incidence_angle": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "detection_probability": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "trial_id": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "target_surface": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

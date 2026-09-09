@@ -1,0 +1,189 @@
+INFO:     Started server process [415844]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8901 (Press CTRL+C to quit)
+INFO:     127.0.0.1:36320 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36324 - "GET /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36340 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56290 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42382 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50194 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57858 - "GET /health HTTP/1.1" 200 OK
+INFO:     10.0.1.25:33258 - "GET / HTTP/1.1" 404 Not Found
+INFO:     10.0.1.25:33258 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56620 - "GET /health HTTP/1.1" 200 OK
+INFO:     10.0.1.25:59428 - "GET /health HTTP/1.1" 200 OK
+INFO:     10.0.1.25:59428 - "GET /health HTTP/1.1" 200 OK
+INFO:     10.0.1.25:59428 - "GET / HTTP/1.1" 404 Not Found
+INFO:     10.0.1.25:59428 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     10.0.1.25:44378 - "GET /health HTTP/1.1" 200 OK
+INFO:     10.0.1.25:44378 - "GET /docs HTTP/1.1" 200 OK
+INFO:     10.0.1.25:44378 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     10.0.1.25:44378 - "GET /docs HTTP/1.1" 200 OK
+INFO:     10.0.1.25:44002 - "GET / HTTP/1.1" 404 Not Found
+INFO:     10.0.1.25:44002 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     10.0.1.25:47428 - "GET / HTTP/1.1" 404 Not Found
+INFO:     10.0.1.25:47428 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     10.0.1.25:47428 - "GET / HTTP/1.1" 404 Not Found
+INFO:     10.0.1.25:47428 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     10.0.1.25:34430 - "GET /docs HTTP/1.1" 200 OK
+INFO:     10.0.1.25:34430 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48758 - "GET /health HTTP/1.1" 200 OK
+INFO:     10.0.1.25:52386 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     10.0.1.25:54002 - "GET /health HTTP/1.1" 200 OK
+INFO:     10.0.1.25:60966 - "GET / HTTP/1.1" 404 Not Found
+INFO:     10.0.1.25:60966 - "GET / HTTP/1.1" 404 Not Found
+INFO:     10.0.1.25:60966 - "GET / HTTP/1.1" 404 Not Found
+INFO:     10.0.1.25:60966 - "GET / HTTP/1.1" 404 Not Found
+INFO:     10.0.1.25:37794 - "GET / HTTP/1.1" 404 Not Found
+INFO:     10.0.1.25:37794 - "GET / HTTP/1.1" 404 Not Found
+INFO:     10.0.1.25:37794 - "GET / HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:38724 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38728 - "POST /api/datasheets/extract HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50430 - "POST /api/datasheets/extract HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56376 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41670 - "GET /health HTTP/1.1" 200 OK
+INFO:     10.0.1.25:52286 - "GET / HTTP/1.1" 404 Not Found
+INFO:     10.0.1.25:52286 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     10.0.1.25:54286 - "GET /robots.txt HTTP/1.1" 404 Not Found
+INFO:     10.0.1.25:54286 - "GET / HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:35284 - "GET /health HTTP/1.1" 200 OK
+INFO:     10.0.1.25:33566 - "GET / HTTP/1.1" 404 Not Found
+INFO:     10.0.1.25:33566 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     10.0.1.25:33566 - "GET /favicon.png HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50860 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38888 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44004 - "GET /health HTTP/1.1" 200 OK
+INFO:     10.0.1.25:40456 - "GET / HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:47924 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34712 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56240 - "GET /health HTTP/1.1" 200 OK
+INFO:     10.0.1.25:46362 - "GET / HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50154 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45554 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51420 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40172 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54420 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56020 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33032 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45212 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37760 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50872 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52638 - "GET /health HTTP/1.1" 200 OK
+INFO:     10.0.1.25:52018 - "GET /robots.txt HTTP/1.1" 404 Not Found
+INFO:     10.0.1.25:52018 - "GET / HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:36078 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43712 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36588 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51132 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42736 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57488 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46334 - "GET /health HTTP/1.1" 200 OK
+INFO:     10.0.1.25:52454 - "GET / HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49996 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58516 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35144 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47796 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56890 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54068 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57712 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34664 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43548 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50972 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58174 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39560 - "GET /health HTTP/1.1" 200 OK
+INFO:     10.0.1.25:38456 - "GET / HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:34200 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35078 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46902 - "GET /health HTTP/1.1" 200 OK
+INFO:     10.0.1.25:45740 - "GET / HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49014 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42288 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43896 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52202 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45746 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53444 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55548 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40052 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34106 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56542 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50096 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36688 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59268 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58950 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33478 - "GET /health HTTP/1.1" 200 OK
+INFO:     10.0.1.25:53378 - "GET / HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:35218 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33010 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43218 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50404 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57688 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58104 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39902 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54976 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58474 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39140 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34624 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43622 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34014 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49890 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39750 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32924 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55604 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58736 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43868 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41140 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41866 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41868 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37538 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46362 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39598 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46252 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44334 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43338 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53780 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46292 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43090 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41728 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37198 - "GET /health HTTP/1.1" 200 OK
+INFO:     10.0.1.25:57824 - "GET / HTTP/1.1" 404 Not Found
+INFO:     10.0.1.25:57824 - "GET / HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:43780 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47770 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59372 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46702 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49410 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43610 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46206 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43348 - "GET /health HTTP/1.1" 200 OK
+INFO:     10.0.1.25:59692 - "GET / HTTP/1.1" 404 Not Found
+INFO:     10.0.1.25:59692 - "GET / HTTP/1.1" 404 Not Found
+INFO:     10.0.1.25:59692 - "GET / HTTP/1.1" 404 Not Found
+INFO:     10.0.1.25:59692 - "GET / HTTP/1.1" 404 Not Found
+INFO:     10.0.1.25:59692 - "GET / HTTP/1.1" 404 Not Found
+INFO:     10.0.1.25:59692 - "GET / HTTP/1.1" 404 Not Found
+INFO:     10.0.1.25:59692 - "GET / HTTP/1.1" 404 Not Found
+INFO:     10.0.1.25:59692 - "GET / HTTP/1.1" 404 Not Found
+INFO:     10.0.1.25:59692 - "GET / HTTP/1.1" 404 Not Found
+INFO:     10.0.1.25:59692 - "GET / HTTP/1.1" 404 Not Found
+INFO:     10.0.1.25:59692 - "GET / HTTP/1.1" 404 Not Found
+INFO:     10.0.1.25:59692 - "GET / HTTP/1.1" 404 Not Found
+INFO:     10.0.1.25:59692 - "GET / HTTP/1.1" 404 Not Found
+INFO:     10.0.1.25:59692 - "GET / HTTP/1.1" 404 Not Found
+INFO:     10.0.1.25:59692 - "GET / HTTP/1.1" 404 Not Found
+INFO:     10.0.1.25:59692 - "GET / HTTP/1.1" 404 Not Found
+INFO:     10.0.1.25:59692 - "GET / HTTP/1.1" 404 Not Found
+INFO:     10.0.1.25:59692 - "GET / HTTP/1.1" 404 Not Found
+INFO:     10.0.1.25:59692 - "GET / HTTP/1.1" 404 Not Found
+INFO:     10.0.1.25:59692 - "GET / HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:46670 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48626 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58526 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58384 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47876 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45506 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33476 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38770 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59364 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58724 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60418 - "GET /health HTTP/1.1" 200 OK

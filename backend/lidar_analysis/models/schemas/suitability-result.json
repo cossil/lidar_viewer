@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lidar-analysis.local/schema/suitability-result.json",
+  "title": "Suitability Result",
+  "type": "object",
+  "required": ["classification", "criteria", "limitations"],
+  "properties": {
+    "classification": {
+      "type": "string",
+      "enum": ["suitable", "conditionally_suitable", "not_suitable", "insufficient_data"]
+    },
+    "criteria": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["criterion", "required", "measured", "passed"],
+        "properties": {
+          "criterion": {
+            "type": "string"
+          },
+          "required": {
+            "type": "number"
+          },
+          "measured": {
+            "type": "number"
+          },
+          "passed": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,230 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lidar-analysis.local/schema/simulation.json",
+  "title": "Simulation",
+  "type": "object",
+  "required": [
+    "simulation_id",
+    "scenario_id",
+    "sensor_id",
+    "mode",
+    "duration",
+    "monte_carlo",
+    "random_seed",
+    "status"
+  ],
+  "properties": {
+    "simulation_id": {
+      "type": "string"
+    },
+    "scenario_id": {
+      "type": "string"
+    },
+    "sensor_id": {
+      "type": "string"
+    },
+    "sensor_version": {
+      "type": "string"
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "analytical",
+        "monte_carlo",
+        "synthetic_point_cloud"
+      ]
+    },
+    "duration": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "monte_carlo": {
+      "type": "object",
+      "required": [
+        "enabled",
+        "trials"
+      ],
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "trials": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100000
+        },
+        "random_seed": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "random_seed": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "detection_model_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "detection_criteria": {
+      "$ref": "#/$defs/detectionCriteria"
+    },
+    "measurement_model": {
+      "$ref": "#/$defs/measurementModel"
+    },
+    "assumptions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/assumption"
+      }
+    },
+    "software_version": {
+      "type": "string"
+    },
+    "model_version": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "queued",
+        "running",
+        "completed",
+        "failed",
+        "cancelled"
+      ]
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "detectionCriteria": {
+      "type": "object",
+      "properties": {
+        "detected": {
+          "$ref": "#/$defs/criterion"
+        },
+        "reliable": {
+          "$ref": "#/$defs/criterion"
+        },
+        "characterized": {
+          "$ref": "#/$defs/characterizationCriterion"
+        }
+      },
+      "additionalProperties": false
+    },
+    "criterion": {
+      "type": "object",
+      "properties": {
+        "minimum_returns": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "minimum_probability": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "characterizationCriterion": {
+      "type": "object",
+      "properties": {
+        "minimum_returns": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "minimum_probability": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "minimum_coverage": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "maximum_range_uncertainty": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    },
+    "measurementModel": {
+      "type": "object",
+      "properties": {
+        "range_bias": {
+          "type": "number"
+        },
+        "range_sigma": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "range_error_definition": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "1sigma",
+            "2sigma",
+            "95_percent",
+            "rms",
+            "maximum",
+            "unspecified",
+            null
+          ]
+        },
+        "angular_bias": {
+          "type": "number"
+        },
+        "angular_sigma": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    },
+    "assumption": {
+      "type": "object",
+      "required": [
+        "id",
+        "description"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "origin": {
+          "type": "string",
+          "enum": [
+            "ASSUMED",
+            "USER_DEFINED"
+          ]
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

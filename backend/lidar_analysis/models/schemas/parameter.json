@@ -1,0 +1,63 @@
+{
+  "$id": "https://lidar-analysis.local/schema/parameter.json",
+  "title": "Parameter",
+  "type": "object",
+  "required": [
+    "value",
+    "unit",
+    "origin"
+  ],
+  "properties": {
+    "value": {
+      "type": [
+        "number",
+        "integer",
+        "null"
+      ]
+    },
+    "unit": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "origin": {
+      "type": "string",
+      "enum": [
+        "SOURCE",
+        "USER_DEFINED",
+        "DERIVED",
+        "ASSUMED",
+        "MODELED",
+        "SIMULATED",
+        "EMPIRICAL"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "known",
+        "unknown",
+        "not_applicable",
+        "estimated"
+      ],
+      "default": "known"
+    },
+    "definition": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "conditions": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "provenance": {
+      "$ref": "provenance.json"
+    }
+  },
+  "additionalProperties": false
+}

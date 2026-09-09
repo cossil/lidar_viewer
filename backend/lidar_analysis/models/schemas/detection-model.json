@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lidar-analysis.local/schema/detection-model.json",
+  "title": "Detection Model",
+  "type": "object",
+  "required": [
+    "model_id",
+    "model_type",
+    "version"
+  ],
+  "properties": {
+    "model_id": {
+      "type": "string"
+    },
+    "model_type": {
+      "type": "string",
+      "enum": [
+        "datasheet",
+        "analytical",
+        "empirical",
+        "assumption"
+      ]
+    },
+    "version": {
+      "type": "string"
+    },
+    "description": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "parameters": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "required_inputs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "output": {
+      "type": "string",
+      "const": "probability"
+    },
+    "validity": {
+      "type": "object",
+      "properties": {
+        "minimum_range": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "maximum_range": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "minimum_reflectivity": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "maximum_reflectivity": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "notes": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "provenance": {
+      "$ref": "provenance.json"
+    },
+    "confidence": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0,
+      "maximum": 1
+    }
+  },
+  "additionalProperties": false
+}
