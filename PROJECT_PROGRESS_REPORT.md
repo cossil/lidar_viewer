@@ -88,14 +88,18 @@ The platform strictly implements the ten foundational engineering rules establis
 
 2. **OpenRouter AI Extractor (`llm_extractor.py`):**
    - Integrates the OpenRouter API using model **`z-ai/glm-5.3-flash`**.
-   - Automatic credential resolution from environment variables or local user secret stores (`%LOCALAPPDATA%\hermes\.env`).
-   - Strict system prompt constraining the LLM to output valid JSON matching the LiDAR schema without fabricating missing attributes.
-   - Seamless fallback to local static parser upon network disruption.
+   - Automatic credential resolution from environment variables, workspace `.env`, or local user secret stores (`%LOCALAPPDATA%\hermes\.env`).
+   - Strict system prompt constraining the LLM to output valid JSON matching the LiDAR schema without fabricating missing attributes (Rule 1).
+   - Upgraded HTTP transport using `httpx` with timeout resilience (120s) and automatic stripping of Markdown code fences (`_parse_json_content`) returned by reasoning LLMs.
+   - Native multi-page binary PDF ingestion with `pypdf`, extracting focused technical specification tables directly from datasheet documents.
    - User toggle in the frontend UI allowing operator choice between standard parsing and LLM-assisted ingestion.
 
 3. **Validation & Versioning (`datasheet_validator.py`):**
    - Interactive human-in-the-loop review endpoint (`POST /api/datasheets/{id}/validate`).
-   - Validates candidate parameters, updates validation status to `validated`, and increments sensor version.
+   - Validates candidate parameters with standard provenance (`origin: "SOURCE"`, `status: "known"`), updates validation status, and increments sensor version into strict Pydantic `Sensor` instances.
+   - Verified live with multi-vendor datasheets:
+     - **RIEGL miniVUX-3UAV** (`RIEGL_miniVUX-3UAV_Datasheet_2026-08-18.pdf`) $\to$ `data/sensors/riegl-minivux-3uav.v1.0.0.json`.
+     - **Ouster OS1 MAX** (`datasheet-rev8-v4p0-os1-max.pdf`) $\to$ `data/sensors/ouster-os1-max.vREV8.0.json`.
 
 ---
 
@@ -244,6 +248,7 @@ All ambiguous specification details were resolved through documented decisions i
 - **D024:** API versioning under `/api/` with OpenAPI specification.
 - **D025:** Non-fabricating datasheet ingestion engine tracking parameter provenance.
 - **D026:** OpenRouter LLM ingestion with `z-ai/glm-5.3-flash` enforcing zero-fabrication and automatic secret management.
+- **D027:** Native PDF parsing (`pypdf`) with reasoning-model Markdown fence stripping (`_parse_json_content`) and automatic parameter provenance assignment (`origin="SOURCE"`, `status="known"`).
 
 ---
 

@@ -1,0 +1,110 @@
+{
+  "sensor_id": "ouster-os1-max",
+  "manufacturer": "Ouster",
+  "model": "OS1 MAX",
+  "hardware_revision": null,
+  "firmware_version": null,
+  "version": "REV8.0",
+  "sensor_type": "mechanical_spinning",
+  "wavelength": null,
+  "range": {
+    "minimum": {
+      "value": 0.0,
+      "unit": "m",
+      "origin": "SOURCE",
+      "status": "known",
+      "definition": null,
+      "conditions": null,
+      "provenance": null
+    },
+    "maximum": {
+      "value": 500,
+      "unit": "m",
+      "origin": "SOURCE",
+      "status": "known",
+      "definition": null,
+      "conditions": null,
+      "provenance": null
+    },
+    "reflectivity_curves": []
+  },
+  "accuracy": {
+    "range": {
+      "value": 0.0125,
+      "unit": "m",
+      "origin": "SOURCE",
+      "status": "known",
+      "definition": null,
+      "conditions": null,
+      "provenance": null
+    },
+    "angular": null,
+    "definition": null
+  },
+  "precision": null,
+  "angular": null,
+  "beam": {
+    "horizontal_divergence": {
+      "value": 0.00157,
+      "unit": "rad",
+      "origin": "SOURCE",
+      "status": "known",
+      "definition": null,
+      "conditions": null,
+      "provenance": null
+    },
+    "vertical_divergence": {
+      "value": 0.00157,
+      "unit": "rad",
+      "origin": "SOURCE",
+      "status": "known",
+      "definition": null,
+      "conditions": null,
+      "provenance": null
+    },
+    "beam_shape": null
+  },
+  "scan": {
+    "type": "mechanical_spinning",
+    "point_rate": {
+      "value": 10485760,
+      "unit": "Hz",
+      "origin": "SOURCE",
+      "status": "known",
+      "definition": null,
+      "conditions": null,
+      "provenance": null
+    },
+    "frame_rate": {
+      "value": 10,
+      "unit": "Hz",
+      "origin": "SOURCE",
+      "status": "known",
+      "definition": null,
+      "conditions": null,
+      "provenance": null
+    },
+    "rotation_frequency": {
+      "value": 10,
+      "unit": "Hz",
+      "origin": "SOURCE",
+      "status": "known",
+      "definition": null,
+      "conditions": null,
+      "provenance": null
+    },
+    "horizontal_resolution": null,
+    "vertical_resolution": null,
+    "scan_phase": null,
+    "coverage_model": null
+  },
+  "optical": null,
+  "detection": null,
+  "provenance": [],
+  "assumptions": [],
+  "validation": {
+    "status": "unvalidated",
+    "validated_by": null,
+    "validated_at": null
+  }
+}

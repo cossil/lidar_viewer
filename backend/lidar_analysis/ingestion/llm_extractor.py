@@ -20,7 +20,9 @@ def get_openrouter_api_key() -> Optional[str]:
         return key.strip()
 
     # Fallback to hermes .env or workspace .env
+    repo_root = Path(__file__).resolve().parents[3]
     candidate_files = [
+        repo_root / ".env",
         Path(r"C:\Users\cossi\AppData\Local\hermes\.env"),
         Path(".env"),
         Path("../.env"),
@@ -73,6 +75,18 @@ RULES:
 """
 
 
+def _parse_json_content(content_str: str) -> Dict[str, Any]:
+    cleaned = (content_str or "").strip()
+    if cleaned.startswith("```"):
+        lines = cleaned.splitlines()
+        if lines and lines[0].startswith("```"):
+            lines = lines[1:]
+        if lines and lines[-1].startswith("```"):
+            lines = lines[:-1]
+        cleaned = "\n".join(lines).strip()
+    return json.loads(cleaned)
+
+
 def extract_with_openrouter(
     raw_text: str,
     model: str = "z-ai/glm-5.3-flash",
@@ -96,18 +110,32 @@ def extract_with_openrouter(
         "temperature": 0.0,
     }
 
-    req = urllib.request.Request(
-        "https://openrouter.ai/api/v1/chat/completions",
-        data=json.dumps(payload).encode("utf-8"),
-        headers={
-            "Authorization": f"Bearer {key}",
-            "Content-Type": "application/json",
-            "HTTP-Referer": "http://127.0.0.1:8000",
-            "X-Title": "SilvaLab LiDAR Analysis Platform",
-        },
-    )
+    headers = {
+        "Authorization": f"Bearer {key}",
+        "Content-Type": "application/json",
+        "HTTP-Referer": "http://127.0.0.1:8000",
+        "X-Title": "SilvaLab LiDAR Analysis Platform",
+    }
 
-    with urllib.request.urlopen(req, timeout=30) as resp:
-        body = json.loads(resp.read().decode("utf-8"))
-        content_str = body["choices"][0]["message"]["content"]
-        return json.loads(content_str)
+    try:
+        import httpx
+        with httpx.Client(timeout=120.0) as client:
+            resp = client.post(
+                "https://openrouter.ai/api/v1/chat/completions",
+                json=payload,
+                headers=headers,
+            )
+            resp.raise_for_status()
+            body = resp.json()
+            content_str = body["choices"][0]["message"]["content"]
+            return _parse_json_content(content_str)
+    except ImportError:
+        req = urllib.request.Request(
+            "https://openrouter.ai/api/v1/chat/completions",
+            data=json.dumps(payload).encode("utf-8"),
+            headers=headers,
+        )
+        with urllib.request.urlopen(req, timeout=60) as resp:
+            body = json.loads(resp.read().decode("utf-8"))
+            content_str = body["choices"][0]["message"]["content"]
+            return _parse_json_content(content_str)

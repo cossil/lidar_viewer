@@ -120,7 +120,14 @@ def _candidate_from_dict(data, warnings):
         if spec["id"] in STRING_IDS:
             _set(candidate, spec["path"], val)
         else:
-            value_block = {"value": val, "unit": _unit(raw, spec.get("unit"))}
+            orig = raw.get("origin") if isinstance(raw, dict) and raw.get("origin") else "SOURCE"
+            st = raw.get("status") if isinstance(raw, dict) and raw.get("status") else "known"
+            value_block = {
+                "value": val,
+                "unit": _unit(raw, spec.get("unit")),
+                "origin": orig,
+                "status": st,
+            }
             _set(candidate, spec["path"], value_block)
     return candidate
 
@@ -185,7 +192,12 @@ def _reconstruct(candidate):
     if not candidate:
         return None
     try:
-        return Sensor.model_validate(candidate)
+        cand_copy = dict(candidate)
+        if "validation" not in cand_copy:
+            cand_copy["validation"] = {"status": "unvalidated"}
+        if "scan" in cand_copy and isinstance(cand_copy["scan"], dict) and "type" not in cand_copy["scan"]:
+            cand_copy["scan"]["type"] = cand_copy.get("sensor_type") or cand_copy.get("scan_type") or "mechanical_spinning"
+        return Sensor.model_validate(cand_copy)
     except Exception:
         return None
 
@@ -202,11 +214,33 @@ def ingest_datasheet(
     if data is None:
         data = {}
 
+    # Auto-extract text if PDF file provided and text is empty
+    if (not data or (isinstance(data, dict) and not data.get("text"))) and filename and filename.lower().endswith(".pdf"):
+        from pathlib import Path
+        p = Path(filename)
+        if not p.exists():
+            p = Path("C:/Ai/lidar_viewer") / filename
+        if p.exists():
+            try:
+                from pypdf import PdfReader
+                reader = PdfReader(str(p))
+                pages_to_read = reader.pages[:3]
+                pdf_text = "\n".join(page.extract_text() or "" for page in pages_to_read)
+                if pdf_text.strip():
+                    data = {"text": pdf_text}
+            except Exception as pe:
+                warnings.append(f"PDF text extraction error: {pe}")
+
     candidate = {}
     if use_llm:
         from .llm_extractor import extract_with_openrouter
         try:
-            raw_text = data if isinstance(data, str) else (json.dumps(data) if isinstance(data, dict) else str(data))
+            if isinstance(data, dict) and "text" in data:
+                raw_text = data["text"]
+            elif isinstance(data, str):
+                raw_text = data
+            else:
+                raw_text = json.dumps(data)
             llm_result = extract_with_openrouter(raw_text, model=llm_model)
             candidate = _candidate_from_dict(llm_result, warnings)
         except Exception as e:

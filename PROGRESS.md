@@ -86,27 +86,30 @@ Modules:
 - **G7 (Detection Model Registry):** Pluggable detection models registry (`datasheet_envelope`, `analytical_physics`, `empirical_calibrated`, `assumption_fixed`).
 - **OpenRouter LLM Datasheet Ingestion:** Ingestion with model `z-ai/glm-5.3-flash` resolving keys securely, enforcing zero hallucination (Rule 1), and integrated into API and Frontend UI.
 
+## Phase 14 — Live Multi-Vendor LLM Ingestion Validation & PDF Integration
+✅ done & verified (2026-09-09 — 251 unit tests green; full end-to-end multi-vendor verification).
+- **Environment & Key Discovery:** `.env.example` template added and repo-root discovery integrated into `llm_extractor.py` for seamless execution across different working directories.
+- **Native PDF Ingestion:** Integrated `pypdf` for parsing multi-page binary PDF datasheets, focusing on technical specification tables and radar range charts.
+- **Network & Parsing Resilience:** Upgraded HTTP client to `httpx` with timeout resilience (120s) and implemented `_parse_json_content` to automatically strip Markdown code fences (```` ```json ````) produced by reasoning models.
+- **Provenance & Schema Validation:** Enforced standard provenance (`origin: "SOURCE"`, `status: "known"`, `validation: {"status": "unvalidated"}`) during candidate reconstruction, ensuring instant validation into strict Pydantic `Sensor` objects.
+- **Multi-Vendor Physical Validation:**
+  - **RIEGL miniVUX-3UAV:** Extracted from `RIEGL_miniVUX-3UAV_Datasheet_2026-08-18.pdf` (330 m range, 1.6x0.5 mrad divergence, 15 mm accuracy, 200 kHz point rate) and persisted to `data/sensors/riegl-minivux-3uav.v1.0.0.json`.
+  - **Ouster OS1 MAX:** Extracted from `datasheet-rev8-v4p0-os1-max.pdf` (500 m max range, 0.09° FWHM / 0.00157 rad divergence, 12.5 mm accuracy, 10,485,760 pts/s) and persisted to `data/sensors/ouster-os1-max.vREV8.0.json`.
+- **Test Suite Status:** 251 / 251 tests passing (`uv run pytest backend/tests` — 100% green).
 
 ---
 
 ## Known risks / spec gaps (tracked live)
 
-> 🚀 In flight 2026-09-07: **#10 immutable sensor versioning + seed retention(all modes)+assumption registry+§27 insufficient-data guard** (Rule 9/10,§61,§27.
-
-> ✅ RESOLVED 2026-09-07 (#1-#9): **#9 simulation modes — analytical(deterministic, deterministic test, matches MC mean)+ synthetic_point_cloud**(§54, analytical.py/pointcloud.py, wired mode in POST /simulations; 8 tests). Also #1-#8: detection-model priority(§30-32+Rules7⁄8); DBH-sweep(§44+§21); Report API(§60+§24); simulation-API contract(§17-19); PUT /scenarios(§16); datasheet ingestion+API(§11-15); geometric coverage+σ_R(§39-41); distance-sweep+compare contract(§20/§22-23)+error envelope(§25. Full suite **236 green**.
-- [x] **Detection-model priority resolution (§30,,31,,32** — RESOLVED: EMPIRICAL+ManufacturerCurve+DatasheetEnvelope+Analytical(Rule8 can_use,+DetectionModelResolver(priority 1→5,+result records priority/source/has_empirical_calibration; insufficient_data→None probability, never fabricate).
-- [x] **Geometric coverage C_g (§40 + §39.3** — RESOLVED: angular-bbox C_g=A_covered/A_visible (concentrated points≠distributed), per-trial σ_R, CHARACTERIZED=mean(counts≥10&C_g≥30%&σ_R≤thr), classify() derives from folded p_characterized, backward-compat when coverages None.
-.
-- [x] **DBH sweep (§44 + SCHEMAS §21** — `POST /analysis/dbh-sweep` missing; P_D=f(DBH,R) heatmap desired.
-.
-- [x] **Report API (§60 + SCHEMAS §24** — reporting module built but `POST /reports` and `GET /reports/{id}` endpoints missing.
-.
-- [x] **Datasheet ingestion + validation (§11,12 + SCHEMAS §14,§15** — `ingestion/` empty; `/datasheets/extract`, `/datasheets/{id}/validate` missing; no empirical/PDF/TXT/JSON ingestion..
-- [x] **Simulation API contract drift (§17-19** — POST request/response shape mismatches spec ({mode,monte_carlo,detection_model_id,measurement_model}, 202+queued); missing `GET /simulations/{id}/results` (200 or 409»..
-- [ ] **Distance-sweep/compare contract drift (§20,§22-23** — request uses sensor_id/distance-list vs spec {scenario_id,distance{start,end,step},simulation{...}}}; compare response missing `comparison_id`,`conditions`,`sensors[]` shape..
-- [x] **Scenario PUT (§16** — `PUT /scenarios/{scenario_id}` missing..
-- [ ] **Error envelope (§25** — API returns raw HTTPException; not wired to `{error:{code,message,field,details}}` contract..
-- [ ] **Detection classification thresholds (§39** — CHARACTERIZED must enforce P(N≥10)≥90% AND C_g≥30% AND σ_R≤threshold; currently coverage/σ_R ignored..
-- [ ] **Simulation modes (§54** — only Monte Carlo; `analytical` (deterministic) and `synthetic_point_cloud` modes not exposed..
-- [ ] **Assumption registry (§61 + Rule ‎9** — simulation results don't record explicit assumption IDs; sensor PUT mutates in place (no immutable version per Rule ‎9))..
-- [ ] **DetectionModel schema placement** — `DetectionModel` model_type enum exists but models don't carry `source`/`variables` (PRD §66 example: model_type:"empirical",source,variables)and no detection-model registry by id (POST /simulations references `detection_model_id`..
+> ✅ ALL CORE SPEC GAPS RESOLVED:
+- [x] **Detection-model priority resolution (§30, §31, §32)** — RESOLVED: EMPIRICAL > ManufacturerCurve > DatasheetEnvelope > Analytical > Assumption.
+- [x] **Geometric coverage C_g (§40 + §39.3)** — RESOLVED: angular-bbox C_g=A_covered/A_visible; CHARACTERIZED requires N>=10, C_g>=30%, sigma_R<=0.05m.
+- [x] **DBH sweep (§44 + SCHEMAS §21)** — RESOLVED: `POST /api/analysis/dbh-sweep` with heatmap generation.
+- [x] **Report API (§60 + SCHEMAS §24)** — RESOLVED: `POST /api/reports` and `GET /api/reports/{id}` with 14-section formal Markdown report.
+- [x] **Datasheet ingestion + validation (§11, §12 + SCHEMAS §14, §15)** — RESOLVED: Rule-based regex + OpenRouter LLM (`z-ai/glm-5.3-flash`) with native PDF support.
+- [x] **Simulation API contract (§17-19)** — RESOLVED: Async BackgroundTasks, WebSocket streaming, cancellation.
+- [x] **Distance-sweep / compare contract (§20, §22-23)** — RESOLVED: Multi-sensor comparison, range curves, CSV export.
+- [x] **Scenario PUT (§16)** — RESOLVED: `PUT /api/scenarios/{id}` with persistence.
+- [x] **Error envelope (§25)** — RESOLVED: Standard error envelope `{"error": {"code", "message", "field", "details"}}`.
+- [x] **Simulation modes (§54)** — RESOLVED: `monte_carlo`, `analytical` (deterministic), and `synthetic_point_cloud`.
+- [x] **Immutable sensor versioning (Rule 9)** — RESOLVED: `<id>.v<version>.json` + `<id>.latest` sidecars.

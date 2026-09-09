@@ -1,0 +1,110 @@
+{
+  "sensor_id": "riegl-minivux-3uav",
+  "manufacturer": "RIEGL",
+  "model": "miniVUX-3UAV",
+  "hardware_revision": null,
+  "firmware_version": null,
+  "version": "1.0.0",
+  "sensor_type": "mechanical_spinning",
+  "wavelength": null,
+  "range": {
+    "minimum": {
+      "value": 2,
+      "unit": "m",
+      "origin": "SOURCE",
+      "status": "known",
+      "definition": null,
+      "conditions": null,
+      "provenance": null
+    },
+    "maximum": {
+      "value": 330,
+      "unit": "m",
+      "origin": "SOURCE",
+      "status": "known",
+      "definition": null,
+      "conditions": null,
+      "provenance": null
+    },
+    "reflectivity_curves": []
+  },
+  "accuracy": {
+    "range": {
+      "value": 0.015,
+      "unit": "m",
+      "origin": "SOURCE",
+      "status": "known",
+      "definition": null,
+      "conditions": null,
+      "provenance": null
+    },
+    "angular": null,
+    "definition": null
+  },
+  "precision": null,
+  "angular": null,
+  "beam": {
+    "horizontal_divergence": {
+      "value": 0.0016,
+      "unit": "rad",
+      "origin": "SOURCE",
+      "status": "known",
+      "definition": null,
+      "conditions": null,
+      "provenance": null
+    },
+    "vertical_divergence": {
+      "value": 0.0005,
+      "unit": "rad",
+      "origin": "SOURCE",
+      "status": "known",
+      "definition": null,
+      "conditions": null,
+      "provenance": null
+    },
+    "beam_shape": "elliptical"
+  },
+  "scan": {
+    "type": "mechanical_spinning",
+    "point_rate": {
+      "value": 200000,
+      "unit": "Hz",
+      "origin": "SOURCE",
+      "status": "known",
+      "definition": null,
+      "conditions": null,
+      "provenance": null
+    },
+    "frame_rate": {
+      "value": 100,
+      "unit": "Hz",
+      "origin": "SOURCE",
+      "status": "known",
+      "definition": null,
+      "conditions": null,
+      "provenance": null
+    },
+    "rotation_frequency": {
+      "value": 100,
+      "unit": "Hz",
+      "origin": "SOURCE",
+      "status": "known",
+      "definition": null,
+      "conditions": null,
+      "provenance": null
+    },
+    "horizontal_resolution": null,
+    "vertical_resolution": null,
+    "scan_phase": null,
+    "coverage_model": null
+  },
+  "optical": null,
+  "detection": null,
+  "provenance": [],
+  "assumptions": [],
+  "validation": {
+    "status": "unvalidated",
+    "validated_by": null,
+    "validated_at": null
+  }
+}

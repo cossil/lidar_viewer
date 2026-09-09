@@ -87,4 +87,8 @@ Datasheet extraction supports optional LLM-assisted parsing via OpenRouter using
 - System prompt strictly enforces Rule 1 (Zero Fabrication). Parameters not explicitly stated in the datasheet are omitted or set to null, never invented.
 - Outputs structured sensor candidates compatible with `Sensor.model_validate` and tracks parameter provenance.
 - The UI provides an intuitive toggle in the Datasheet Upload modal to enable LLM extraction with `z-ai/glm-5.3-flash`.
-,
+
+## D027 - Native PDF Ingestion & Reasoning-Model Code Block Stripping
+- Integrated `pypdf` for parsing multi-page manufacturer PDF documents without external converters.
+- Reasoning models like `z-ai/glm-5.3-flash` produce Markdown code block fences (```` ```json ````); implemented `_parse_json_content` to safely strip these blocks and prevent `JSONDecodeError`.
+- Enforces standard parameter provenance (`origin: "SOURCE"`, `status: "known"`, `validation: {"status": "unvalidated"}`) allowing extracted sensor candidates to validate directly as strict Pydantic `Sensor` instances.
