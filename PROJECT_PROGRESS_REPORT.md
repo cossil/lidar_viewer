@@ -249,6 +249,7 @@ All ambiguous specification details were resolved through documented decisions i
 - **D025:** Non-fabricating datasheet ingestion engine tracking parameter provenance.
 - **D026:** OpenRouter LLM ingestion with `z-ai/glm-5.3-flash` enforcing zero-fabrication and automatic secret management.
 - **D027:** Native PDF parsing (`pypdf`) with reasoning-model Markdown fence stripping (`_parse_json_content`) and automatic parameter provenance assignment (`origin="SOURCE"`, `status="known"`).
+- **D028:** Manual Sensor Catalog Management & Form Engineering: Replaced automatic datasheet ingestion UI with a comprehensive 4-tab glassmorphic manual registration and editing form, providing SI conversion (mrad → rad), Pydantic validation enforcement, immutable version bumping (Rule 9 snapshot retention), and safe sensor deletion.
 
 ---
 

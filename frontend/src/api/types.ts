@@ -28,18 +28,31 @@ export interface Sensor {
   range?: {
     maximum?: ParameterValue<number>;
     minimum?: ParameterValue<number>;
+    reflectivity_curves?: any[];
   };
   accuracy?: {
     range?: ParameterValue<number>;
+    angular?: ParameterValue<number>;
     angular_horizontal?: ParameterValue<number>;
     angular_vertical?: ParameterValue<number>;
+    definition?: string;
   };
   precision?: {
     range?: ParameterValue<number>;
+    angular?: ParameterValue<number>;
     angular_horizontal?: ParameterValue<number>;
     angular_vertical?: ParameterValue<number>;
+    definition?: string;
+  };
+  angular?: {
+    horizontal_fov?: ParameterValue<number>;
+    vertical_fov?: ParameterValue<number>;
+    horizontal_resolution?: ParameterValue<number>;
+    vertical_resolution?: ParameterValue<number>;
+    channel_count?: ParameterValue<number>;
   };
   beam?: {
+    beam_shape?: 'circular' | 'elliptical' | 'gaussian' | 'unknown';
     shape?: string;
     horizontal_divergence?: ParameterValue<number>;
     vertical_divergence?: ParameterValue<number>;
@@ -56,6 +69,8 @@ export interface Sensor {
     validated_by?: string;
     validated_at?: string;
   };
+  provenance?: any[];
+  assumptions?: any[];
 }
 
 export interface TargetConfig {

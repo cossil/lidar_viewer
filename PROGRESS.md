@@ -95,7 +95,27 @@ Modules:
 - **Multi-Vendor Physical Validation:**
   - **RIEGL miniVUX-3UAV:** Extracted from `RIEGL_miniVUX-3UAV_Datasheet_2026-08-18.pdf` (330 m range, 1.6x0.5 mrad divergence, 15 mm accuracy, 200 kHz point rate) and persisted to `data/sensors/riegl-minivux-3uav.v1.0.0.json`.
   - **Ouster OS1 MAX:** Extracted from `datasheet-rev8-v4p0-os1-max.pdf` (500 m max range, 0.09° FWHM / 0.00157 rad divergence, 12.5 mm accuracy, 10,485,760 pts/s) and persisted to `data/sensors/ouster-os1-max.vREV8.0.json`.
-- **Test Suite Status:** 251 / 251 tests passing (`uv run pytest backend/tests` — 100% green).
+## Phase 15 — Manual Sensor Registration, Versioned Editing & Deletion Management
+✅ done & verified (2026-09-09 — 251 unit tests green; full browser E2E verification).
+- **Datasheet Ingestion UI Deactivated:** As requested, disabled/removed the automatic datasheet ingestion button and modal in the UI while retaining underlying services.
+- **Comprehensive Sensor Registration Form:**
+  - Added primary `+ Cadastrar Novo Sensor` button in the Sensor Catalog header.
+  - Implemented multi-tab, glassmorphic modal covering all physical simulation parameters:
+    - *Identificação:* Unique slug `sensor_id`, manufacturer, model, version, sensor architecture type, hardware revision, firmware version.
+    - *Alcance & Acurácia:* Minimum range, maximum range (critical for simulation limits), metric range accuracy (1-sigma), range precision.
+    - *Óptica & Feixe:* Laser wavelength (nm), horizontal divergence (mrad → rad conversion), vertical divergence (mrad → rad), beam shape (`circular`, `elliptical`, `gaussian`).
+    - *Varredura & Dinâmica:* Pulse repetition rate / point rate (pts/s), rotation/scan frequency (Hz / RPM), frame rate (Hz), channel/beam count (`angular.channel_count`), horizontal & vertical field of view (FOV).
+  - Validation: Enforced strict validation preventing zero or negative values for critical simulation parameters.
+- **Sensor Editing & Immutable Version Bumping (Rule 9):**
+  - Replaced legacy 2-field editor with the full multi-tab form, auto-populated from selected sensor specs.
+  - On update, creates a new version snapshot (`v1.1.0`), saves to disk persistence, and retains previous snapshots in the immutable version history.
+- **Sensor Deletion with Confirmation Modal:**
+  - Added a dedicated delete action with red highlight and confirmation modal.
+  - Calls `DELETE /api/sensors/{id}`, soft-deletes persistence record, and refreshes the catalog list.
+- **End-to-End Testing & Verification:**
+  - `npm --prefix frontend run build` exited 0 with 0 TypeScript errors.
+  - All 251 backend tests passing (`uv run pytest backend/tests`).
+  - Browser subagent verified full creation of test sensor `DroneScan-V1`, editing to `v1.1.0` with snapshot retention, and successful deletion.
 
 ---
 
