@@ -16,17 +16,24 @@
     "provenance": null
   },
   "range": {
-    "minimum": null,
-    "maximum": {
-      "value": null,
+    "minimum": {
+      "value": 0.1,
       "unit": "m",
       "origin": "SOURCE",
-      "status": "unknown",
-      "definition": null,
-      "conditions": null,
-      "provenance": null
+      "status": "known"
     },
-    "max_representable_range": null,
+    "maximum": {
+      "value": 60,
+      "unit": "m",
+      "origin": "SOURCE",
+      "status": "known"
+    },
+    "max_representable_range": {
+      "value": 100,
+      "unit": "m",
+      "origin": "SOURCE",
+      "status": "known"
+    },
     "reflectivity_curves": []
   },
   "accuracy": {
@@ -42,7 +49,26 @@
     "angular": null,
     "definition": null
   },
-  "precision": null,
+  "precision": {
+    "range": {
+      "value": 0.01,
+      "unit": "m",
+      "origin": "SOURCE",
+      "status": "known"
+    },
+    "range_min": {
+      "value": 0.005,
+      "unit": "m",
+      "origin": "SOURCE",
+      "status": "known"
+    },
+    "range_max_10pct": {
+      "value": 0.025,
+      "unit": "m",
+      "origin": "SOURCE",
+      "status": "known"
+    }
+  },
   "angular": null,
   "beam": {
     "horizontal_divergence": {

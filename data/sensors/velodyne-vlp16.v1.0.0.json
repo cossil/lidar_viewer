@@ -1,7 +1,7 @@
 {
   "sensor_id": "velodyne-vlp16",
-  "manufacturer": "Hesai",
-  "model": "QT64",
+  "manufacturer": "Velodyne",
+  "model": "VLP-16 (Puck)",
   "hardware_revision": null,
   "firmware_version": null,
   "version": "1.0.0",
@@ -16,17 +16,24 @@
     "provenance": null
   },
   "range": {
-    "minimum": null,
-    "maximum": {
-      "value": 200,
+    "minimum": {
+      "value": 0.5,
       "unit": "m",
       "origin": "SOURCE",
-      "status": "known",
-      "definition": null,
-      "conditions": null,
-      "provenance": null
+      "status": "known"
     },
-    "max_representable_range": null,
+    "maximum": {
+      "value": 70,
+      "unit": "m",
+      "origin": "SOURCE",
+      "status": "known"
+    },
+    "max_representable_range": {
+      "value": 100,
+      "unit": "m",
+      "origin": "SOURCE",
+      "status": "known"
+    },
     "reflectivity_curves": []
   },
   "accuracy": {
@@ -42,7 +49,26 @@
     "angular": null,
     "definition": null
   },
-  "precision": null,
+  "precision": {
+    "range": {
+      "value": 0.015,
+      "unit": "m",
+      "origin": "SOURCE",
+      "status": "known"
+    },
+    "range_min": {
+      "value": 0.01,
+      "unit": "m",
+      "origin": "SOURCE",
+      "status": "known"
+    },
+    "range_max_10pct": {
+      "value": 0.035,
+      "unit": "m",
+      "origin": "SOURCE",
+      "status": "known"
+    }
+  },
   "angular": null,
   "beam": {
     "horizontal_divergence": {
@@ -59,6 +85,7 @@
   },
   "scan": {
     "type": "mechanical_spinning",
+    "returns_per_pulse": 2,
     "point_rate": {
       "value": 600000,
       "unit": "Hz",
