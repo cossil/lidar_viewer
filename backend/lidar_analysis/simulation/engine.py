@@ -69,12 +69,14 @@ class SingleTrialEngine:
         measurement_model: MeasurementModel,
         beam_divergence: float,
         rng: np.random.Generator,
+        returns_per_pulse: int = 1,
     ):
         self.target = target
         self.detection_model = detection_model
         self.measurement_model = measurement_model
         self.beam_divergence = beam_divergence
         self.rng = rng
+        self.returns_per_pulse = max(1, int(returns_per_pulse))
 
     def run(
         self,
@@ -135,14 +137,14 @@ class SingleTrialEngine:
                 return_strength=S,
             )
 
-            # 7. Bernoulli trial
+            # 7. Multi-return Bernoulli trials
             p_d = det_result.probability or 0.0
-            detected = bool(self.rng.random() < p_d)
+            detected_1 = bool(self.rng.random() < p_d)
 
-            # 8. Measurement error (only if detected)
-            measurement = None
-            if detected:
-                measurement = self.measurement_model.apply(
+            # 8. Measurement error (primary return)
+            meas_1 = None
+            if detected_1:
+                meas_1 = self.measurement_model.apply(
                     true_range=true_range,
                     true_angle_h=sp.horizontal_angle,
                     true_angle_v=sp.vertical_angle,
@@ -156,12 +158,37 @@ class SingleTrialEngine:
                 overlap=G,
                 strength=S,
                 detection_result=det_result,
-                detected=detected,
-                measurement=measurement,
+                detected=detected_1,
+                measurement=meas_1,
             )
             hit_records.append(record)
-            if detected:
+            if detected_1:
                 detected_records.append(record)
+
+                # Additional discrete returns for multi-return LiDAR (PRD Rule / Multi-echo capacity)
+                if self.returns_per_pulse > 1:
+                    p_extra = p_d * min(1.0, 0.5 + (1.0 - G) * 0.5)
+                    for ret_idx in range(2, self.returns_per_pulse + 1):
+                        if self.rng.random() < p_extra:
+                            depth_offset = float(self.rng.uniform(-0.015, 0.015))
+                            meas_extra = self.measurement_model.apply(
+                                true_range=max(0.01, true_range + depth_offset),
+                                true_angle_h=sp.horizontal_angle,
+                                true_angle_v=sp.vertical_angle,
+                                rng=self.rng,
+                            )
+                            rec_extra = HitRecord(
+                                scan_point=sp,
+                                intersection=intersection,
+                                incidence_angle=alpha,
+                                overlap=G,
+                                strength=S / ret_idx,
+                                detection_result=det_result,
+                                detected=True,
+                                measurement=meas_extra,
+                            )
+                            hit_records.append(rec_extra)
+                            detected_records.append(rec_extra)
 
         return TrialResult(
             total_rays=len(scan_points),

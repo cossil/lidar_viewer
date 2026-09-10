@@ -131,10 +131,24 @@ def _execute_simulation_job(
         )
         scan_points = scanner.generate_scan_points(duration=request.duration)
 
-        # Build measurement configs (Range + Angular, gap G5)
+        # Determine parametric range noise parameters
+        sigma_min = None
+        sigma_max = None
+        d_max = None
+        if sensor.precision and getattr(sensor.precision, "range_min", None) and sensor.precision.range_min.value is not None:
+            sigma_min = float(sensor.precision.range_min.value)
+        if sensor.precision and getattr(sensor.precision, "range_max_10pct", None) and sensor.precision.range_max_10pct.value is not None:
+            sigma_max = float(sensor.precision.range_max_10pct.value)
+        if sensor.range and sensor.range.maximum and sensor.range.maximum.value is not None:
+            d_max = float(sensor.range.maximum.value)
+
+        # Build measurement configs (Range + Angular, gap G5 & Parametric Noise Model)
         range_cfg = MeasurementConfig(
             bias=request.measurement_model.range_bias,
             sigma=request.measurement_model.range_sigma,
+            sigma_min=sigma_min,
+            sigma_max=sigma_max,
+            d_max=d_max,
         )
         angular_cfg = MeasurementConfig(
             bias=request.measurement_model.angular_bias,
@@ -148,12 +162,17 @@ def _execute_simulation_job(
             sensor,
         )
 
+        returns_per_pulse = 1
+        if sensor.scan and getattr(sensor.scan, "returns_per_pulse", None) is not None:
+            returns_per_pulse = int(sensor.scan.returns_per_pulse)
+
         engine = SingleTrialEngine(
             target=target,
             detection_model=detection_model,
             measurement_model=measurement_model,
             beam_divergence=beam_div,
             rng=np.random.default_rng(request.monte_carlo.random_seed),
+            returns_per_pulse=returns_per_pulse,
         )
 
         sensor_pos = np.array(scenario.sensor_pose.position)

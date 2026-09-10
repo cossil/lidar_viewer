@@ -13,7 +13,13 @@ from .detection import (
     DetectionResult,
     insufficient_data_result,
 )
-from .measurement import MeasurementConfig, MeasurementModel, MeasurementSample, convert_sigma
+from .measurement import (
+    MeasurementConfig,
+    MeasurementModel,
+    MeasurementSample,
+    convert_sigma,
+    compute_parametric_range_noise,
+)
 
 __all__ = [
     "beam_target_overlap",
@@ -30,4 +36,5 @@ __all__ = [
     "MeasurementModel",
     "MeasurementSample",
     "convert_sigma",
+    "compute_parametric_range_noise",
 ]

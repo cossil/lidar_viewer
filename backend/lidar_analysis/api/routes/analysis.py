@@ -82,7 +82,25 @@ def _build_engine(sensor, target_dbh, distance, reflectivity, seed=42):
         point_rate=pr_val,
         rotation_frequency=rf_val,
     )
-    mm = MeasurementConfig(bias=0.0, sigma=acc_val * 0.01)
+    sigma_min = None
+    sigma_max = None
+    d_max = float(max_range_val)
+    if sensor.precision and getattr(sensor.precision, "range_min", None) and sensor.precision.range_min.value is not None:
+        sigma_min = float(sensor.precision.range_min.value)
+    if sensor.precision and getattr(sensor.precision, "range_max_10pct", None) and sensor.precision.range_max_10pct.value is not None:
+        sigma_max = float(sensor.precision.range_max_10pct.value)
+
+    returns_per_pulse = 1
+    if sensor.scan and getattr(sensor.scan, "returns_per_pulse", None) is not None:
+        returns_per_pulse = int(sensor.scan.returns_per_pulse)
+
+    mm = MeasurementConfig(
+        bias=0.0,
+        sigma=acc_val * 0.01,
+        sigma_min=sigma_min,
+        sigma_max=sigma_max,
+        d_max=d_max,
+    )
     measurement_model = MeasurementModel(range_config=mm, angular_config=mm)
     engine = SingleTrialEngine(
         target=target,
@@ -90,6 +108,7 @@ def _build_engine(sensor, target_dbh, distance, reflectivity, seed=42):
         measurement_model=measurement_model,
         beam_divergence=beam_div,
         rng=np.random.default_rng(seed),
+        returns_per_pulse=returns_per_pulse,
     )
     return engine, scanner
 

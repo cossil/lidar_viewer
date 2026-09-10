@@ -105,6 +105,9 @@
         "maximum": {
           "$ref": "parameter.json"
         },
+        "max_representable_range": {
+          "$ref": "parameter.json"
+        },
         "reflectivity_curves": {
           "type": "array",
           "items": {
@@ -158,6 +161,12 @@
       "type": "object",
       "properties": {
         "range": {
+          "$ref": "parameter.json"
+        },
+        "range_min": {
+          "$ref": "parameter.json"
+        },
+        "range_max_10pct": {
           "$ref": "parameter.json"
         },
         "angular": {
@@ -268,6 +277,13 @@
             "string",
             "null"
           ]
+        },
+        "returns_per_pulse": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
         }
       },
       "additionalProperties": false

@@ -26,9 +26,12 @@ interface SensorFormData {
   // Range
   range_min: string;
   range_max: string;
+  max_representable_range: string;
   // Accuracy & Precision
   accuracy_range: string;
   precision_range: string;
+  precision_min: string;
+  precision_max_10pct: string;
   // Beam Optics
   wavelength: string;
   beam_h_div_mrad: string;
@@ -39,6 +42,7 @@ interface SensorFormData {
   rotation_freq: string;
   frame_rate: string;
   channel_count: string;
+  returns_per_pulse: string;
   fov_horizontal: string;
   fov_vertical: string;
   validation_status: 'validated' | 'unvalidated' | 'provisional';
@@ -53,9 +57,12 @@ const initialFormData: SensorFormData = {
   hardware_revision: '',
   firmware_version: '',
   range_min: '1.0',
-  range_max: '250.0',
+  range_max: '200.0',
+  max_representable_range: '300.0',
   accuracy_range: '0.02',
   precision_range: '0.01',
+  precision_min: '0.005',
+  precision_max_10pct: '0.025',
   wavelength: '905',
   beam_h_div_mrad: '1.6',
   beam_v_div_mrad: '0.5',
@@ -64,6 +71,7 @@ const initialFormData: SensorFormData = {
   rotation_freq: '10',
   frame_rate: '10',
   channel_count: '1',
+  returns_per_pulse: '1',
   fov_horizontal: '360',
   fov_vertical: '45',
   validation_status: 'validated',
@@ -163,8 +171,11 @@ export const SensorsView: React.FC = () => {
       firmware_version: selectedSensor.firmware_version || '',
       range_min: selectedSensor.range?.minimum?.value != null ? selectedSensor.range.minimum.value.toString() : '',
       range_max: selectedSensor.range?.maximum?.value != null ? selectedSensor.range.maximum.value.toString() : '200',
+      max_representable_range: selectedSensor.range?.max_representable_range?.value != null ? selectedSensor.range.max_representable_range.value.toString() : '',
       accuracy_range: selectedSensor.accuracy?.range?.value != null ? selectedSensor.accuracy.range.value.toString() : '0.02',
       precision_range: selectedSensor.precision?.range?.value != null ? selectedSensor.precision.range.value.toString() : '',
+      precision_min: selectedSensor.precision?.range_min?.value != null ? selectedSensor.precision.range_min.value.toString() : (selectedSensor.precision?.range?.value != null ? selectedSensor.precision.range.value.toString() : '0.005'),
+      precision_max_10pct: selectedSensor.precision?.range_max_10pct?.value != null ? selectedSensor.precision.range_max_10pct.value.toString() : '0.025',
       wavelength: selectedSensor.wavelength?.value != null ? selectedSensor.wavelength.value.toString() : '905',
       beam_h_div_mrad: hDivMrad,
       beam_v_div_mrad: vDivMrad,
@@ -175,6 +186,7 @@ export const SensorsView: React.FC = () => {
       channel_count: selectedSensor.angular?.channel_count?.value != null
         ? selectedSensor.angular.channel_count.value.toString()
         : selectedSensor.scan?.channels != null ? selectedSensor.scan.channels.toString() : '1',
+      returns_per_pulse: selectedSensor.scan?.returns_per_pulse != null ? selectedSensor.scan.returns_per_pulse.toString() : '1',
       fov_horizontal: selectedSensor.angular?.horizontal_fov?.value != null ? selectedSensor.angular.horizontal_fov.value.toString() : '360',
       fov_vertical: selectedSensor.angular?.vertical_fov?.value != null ? selectedSensor.angular.vertical_fov.value.toString() : '45',
       validation_status: (selectedSensor.validation?.status as any) || 'validated',
@@ -238,12 +250,16 @@ export const SensorsView: React.FC = () => {
     setIsSubmitting(true);
     try {
       const minRangeVal = formData.range_min.trim() ? parseFloat(formData.range_min) : null;
+      const maxRepRangeVal = formData.max_representable_range.trim() ? parseFloat(formData.max_representable_range) : null;
       const accRangeVal = formData.accuracy_range.trim() ? parseFloat(formData.accuracy_range) : null;
       const precRangeVal = formData.precision_range.trim() ? parseFloat(formData.precision_range) : null;
+      const precMinVal = formData.precision_min.trim() ? parseFloat(formData.precision_min) : null;
+      const precMaxVal = formData.precision_max_10pct.trim() ? parseFloat(formData.precision_max_10pct) : null;
       const wavelengthVal = formData.wavelength.trim() ? parseFloat(formData.wavelength) : null;
       const beamVDivVal = formData.beam_v_div_mrad.trim() ? parseFloat(formData.beam_v_div_mrad) : null;
       const frameRateVal = formData.frame_rate.trim() ? parseFloat(formData.frame_rate) : null;
       const channelCountVal = formData.channel_count.trim() ? parseInt(formData.channel_count, 10) : null;
+      const returnsPerPulseVal = formData.returns_per_pulse.trim() ? parseInt(formData.returns_per_pulse, 10) : 1;
       const fovHVal = formData.fov_horizontal.trim() ? parseFloat(formData.fov_horizontal) : null;
       const fovVVal = formData.fov_vertical.trim() ? parseFloat(formData.fov_vertical) : null;
 
@@ -274,7 +290,14 @@ export const SensorsView: React.FC = () => {
             unit: 'm',
             origin: 'USER_DEFINED',
             status: 'known',
+            conditions: { target_reflectivity: 0.10, surface: 'lambertian' },
           },
+          max_representable_range: maxRepRangeVal != null ? {
+            value: maxRepRangeVal,
+            unit: 'm',
+            origin: 'USER_DEFINED',
+            status: 'known',
+          } : undefined,
           reflectivity_curves: selectedSensor?.range?.reflectivity_curves || [],
         },
         accuracy: accRangeVal != null ? {
@@ -285,14 +308,27 @@ export const SensorsView: React.FC = () => {
             status: 'known',
           },
         } : undefined,
-        precision: precRangeVal != null ? {
-          range: {
+        precision: {
+          range: precRangeVal != null ? {
             value: precRangeVal,
             unit: 'm',
             origin: 'USER_DEFINED',
             status: 'known',
-          },
-        } : undefined,
+          } : undefined,
+          range_min: precMinVal != null ? {
+            value: precMinVal,
+            unit: 'm',
+            origin: 'USER_DEFINED',
+            status: 'known',
+          } : undefined,
+          range_max_10pct: precMaxVal != null ? {
+            value: precMaxVal,
+            unit: 'm',
+            origin: 'USER_DEFINED',
+            status: 'known',
+            conditions: { target_reflectivity: 0.10, surface: 'lambertian' },
+          } : undefined,
+        },
         beam: {
           horizontal_divergence: {
             value: beamHDivNum / 1000.0, // convert mrad to rad
@@ -328,6 +364,7 @@ export const SensorsView: React.FC = () => {
             origin: 'USER_DEFINED',
             status: 'known',
           } : undefined,
+          returns_per_pulse: returnsPerPulseVal || 1,
         },
         angular: {
           channel_count: channelCountVal != null ? {
@@ -592,7 +629,7 @@ export const SensorsView: React.FC = () => {
                     <tbody className="divide-y divide-white/5 bg-slate-900/40 text-slate-300">
                       {/* Range Maximum */}
                       <tr>
-                        <td className="p-3 font-mono text-cyan-300 font-semibold">range.maximum</td>
+                        <td className="p-3 font-mono text-cyan-300 font-semibold">range.maximum (10% refl.)</td>
                         <td className="p-3 font-mono font-bold text-white">
                           {selectedSensor.range?.maximum?.value ?? 'Desconhecido'} {selectedSensor.range?.maximum?.unit || 'm'}
                         </td>
@@ -602,9 +639,25 @@ export const SensorsView: React.FC = () => {
                           </span>
                         </td>
                         <td className="p-3 text-[11px] text-slate-400">
-                          Limite superior de alcance na simulação
+                          Alcance padronizado @ 10% refletividade lambertiana (base de cálculo)
                         </td>
                       </tr>
+
+                      {/* Max Representable Range */}
+                      {selectedSensor.range?.max_representable_range?.value != null && (
+                        <tr>
+                          <td className="p-3 font-mono text-cyan-300 font-semibold">range.max_representable_range</td>
+                          <td className="p-3 font-mono font-bold text-white">
+                            {selectedSensor.range.max_representable_range.value} {selectedSensor.range.max_representable_range.unit || 'm'}
+                          </td>
+                          <td className="p-3">
+                            <span className="badge badge-amber text-[10px]">Informativo</span>
+                          </td>
+                          <td className="p-3 text-[11px] text-slate-400">
+                            Teto físico de codificação de dados (não entra nos cálculos principais)
+                          </td>
+                        </tr>
+                      )}
 
                       {/* Range Minimum */}
                       <tr>
@@ -622,6 +675,38 @@ export const SensorsView: React.FC = () => {
                         </td>
                       </tr>
 
+                      {/* Precision Range Min */}
+                      {selectedSensor.precision?.range_min?.value != null && (
+                        <tr>
+                          <td className="p-3 font-mono text-cyan-300 font-semibold">precision.range_min (&sigma;<sub>min</sub>)</td>
+                          <td className="p-3 font-mono font-bold text-white">
+                            ±{(selectedSensor.precision.range_min.value * 100).toFixed(2)} cm ({selectedSensor.precision.range_min.value} {selectedSensor.precision.range_min.unit || 'm'})
+                          </td>
+                          <td className="p-3">
+                            <span className="badge badge-cyan text-[10px]">1-sigma @ d=0</span>
+                          </td>
+                          <td className="p-3 text-[11px] text-slate-400">
+                            Desvio padrão mínimo / ruído de base em d=0
+                          </td>
+                        </tr>
+                      )}
+
+                      {/* Precision Range Max 10% */}
+                      {selectedSensor.precision?.range_max_10pct?.value != null && (
+                        <tr>
+                          <td className="p-3 font-mono text-cyan-300 font-semibold">precision.range_max_10pct (&sigma;<sub>max</sub>)</td>
+                          <td className="p-3 font-mono font-bold text-white">
+                            ±{(selectedSensor.precision.range_max_10pct.value * 100).toFixed(2)} cm ({selectedSensor.precision.range_max_10pct.value} {selectedSensor.precision.range_max_10pct.unit || 'm'})
+                          </td>
+                          <td className="p-3">
+                            <span className="badge badge-cyan text-[10px]">1-sigma @ d_max (10%)</span>
+                          </td>
+                          <td className="p-3 text-[11px] text-slate-400">
+                            Desvio padrão no alcance máximo sob 10% de refletividade
+                          </td>
+                        </tr>
+                      )}
+
                       {/* Accuracy Range */}
                       <tr>
                         <td className="p-3 font-mono text-cyan-300 font-semibold">accuracy.range</td>
@@ -632,9 +717,25 @@ export const SensorsView: React.FC = () => {
                           <span className="badge badge-emerald text-[10px]">1-sigma</span>
                         </td>
                         <td className="p-3 text-[11px] text-slate-400">
-                          Incerteza métrica de medição de distância
+                          Incerteza métrica sistemática de medição de distância
                         </td>
                       </tr>
+
+                      {/* # of Returns */}
+                      {selectedSensor.scan?.returns_per_pulse != null && (
+                        <tr>
+                          <td className="p-3 font-mono text-cyan-300 font-semibold">scan.returns_per_pulse</td>
+                          <td className="p-3 font-mono font-bold text-white">
+                            {selectedSensor.scan.returns_per_pulse} {selectedSensor.scan.returns_per_pulse > 1 ? 'retornos' : 'retorno'}
+                          </td>
+                          <td className="p-3">
+                            <span className="badge badge-emerald text-[10px]">Multi-retorno</span>
+                          </td>
+                          <td className="p-3 text-[11px] text-slate-400">
+                            Número de ecos gravados por pulso laser emitido
+                          </td>
+                        </tr>
+                      )}
 
                       {/* Horizontal Beam Divergence */}
                       <tr>
@@ -967,7 +1068,7 @@ export const SensorsView: React.FC = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label className="form-label">
-                        Alcance Máximo (m) <span className="text-cyan-400">*</span>
+                        Alcance Máximo @ 10% Refletividade (m) <span className="text-cyan-400">*</span>
                       </label>
                       <input
                         type="number"
@@ -975,11 +1076,26 @@ export const SensorsView: React.FC = () => {
                         required
                         value={formData.range_max}
                         onChange={(e) => setFormData({ ...formData, range_max: e.target.value })}
-                        placeholder="ex: 250"
+                        placeholder="ex: 200"
                         className="form-input font-mono text-xs"
                       />
                       <p className="text-[10px] text-slate-500 mt-1">
-                        Distância máxima operacional do sensor (usada no cálculo de detecção).
+                        Distância máxima sob 10% Lambertian reflectivity (padronização usada em todos os cálculos do app).
+                      </p>
+                    </div>
+
+                    <div>
+                      <label className="form-label">Alcance Máximo Representável (m)</label>
+                      <input
+                        type="number"
+                        step="any"
+                        value={formData.max_representable_range}
+                        onChange={(e) => setFormData({ ...formData, max_representable_range: e.target.value })}
+                        placeholder="ex: 300"
+                        className="form-input font-mono text-xs"
+                      />
+                      <p className="text-[10px] text-slate-500 mt-1">
+                        Teto máximo de alcance representável do sensor (informativo, NÃO considerado nos cálculos principais).
                       </p>
                     </div>
 
@@ -1014,17 +1130,32 @@ export const SensorsView: React.FC = () => {
                     </div>
 
                     <div>
-                      <label className="form-label">Precisão / Repetibilidade (m)</label>
+                      <label className="form-label">Precisão Mínima / Ruído Base &sigma;<sub>min</sub> (m)</label>
                       <input
                         type="number"
                         step="any"
-                        value={formData.precision_range}
-                        onChange={(e) => setFormData({ ...formData, precision_range: e.target.value })}
-                        placeholder="ex: 0.010 (10 mm)"
+                        value={formData.precision_min}
+                        onChange={(e) => setFormData({ ...formData, precision_min: e.target.value })}
+                        placeholder="ex: 0.005 (5 mm)"
                         className="form-input font-mono text-xs"
                       />
                       <p className="text-[10px] text-slate-500 mt-1">
-                        Ruído aleatório de medição em superfície plana.
+                        Desvio padrão em d=0 (ruído base mínimo).
+                      </p>
+                    </div>
+
+                    <div>
+                      <label className="form-label">Precisão no Alcance Máximo &sigma;<sub>max</sub> @ 10% (m)</label>
+                      <input
+                        type="number"
+                        step="any"
+                        value={formData.precision_max_10pct}
+                        onChange={(e) => setFormData({ ...formData, precision_max_10pct: e.target.value })}
+                        placeholder="ex: 0.030 (30 mm)"
+                        className="form-input font-mono text-xs"
+                      />
+                      <p className="text-[10px] text-slate-500 mt-1">
+                        Desvio padrão no d_max sob 10% refletividade (usado no modelo exponencial paramétrico).
                       </p>
                     </div>
                   </div>
@@ -1163,6 +1294,22 @@ export const SensorsView: React.FC = () => {
                         placeholder="ex: 1 (miniVUX), 32, 64, 128 (Ouster/Hesai)"
                         className="form-input font-mono text-xs"
                       />
+                    </div>
+
+                    <div>
+                      <label className="form-label">Número de Retornos (# of Returns)</label>
+                      <input
+                        type="number"
+                        step="1"
+                        min="1"
+                        value={formData.returns_per_pulse}
+                        onChange={(e) => setFormData({ ...formData, returns_per_pulse: e.target.value })}
+                        placeholder="ex: 1, 2, 3 ou 5"
+                        className="form-input font-mono text-xs"
+                      />
+                      <p className="text-[10px] text-slate-500 mt-1">
+                        Retornos por pulso (multi-echo). Sensores com mais retornos capturam maior detalhamento em alvos semitransparentes/bordas.
+                      </p>
                     </div>
 
                     <div>

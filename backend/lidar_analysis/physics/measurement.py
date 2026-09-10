@@ -16,6 +16,44 @@ import numpy as np
 from ..models.common import ErrorDefinition
 
 
+def compute_parametric_range_noise(
+    d: float,
+    sigma_min: float,
+    sigma_max: float,
+    d_max: float,
+) -> float:
+    """Parametric Range Noise Model (Generalized Exponential).
+
+    sigma(d) = sigma_min * (sigma_max / sigma_min) ** (d / d_max)
+
+    Input Parameters:
+    - d (float): Current measurement distance (m).
+    - sigma_min (float): Minimum standard deviation / base noise floor at d=0 (m).
+    - sigma_max (float): Standard deviation at maximum sensor range d_max (m).
+    - d_max (float): Maximum operating range of sensor under 10% Lambertian reflectivity (m).
+
+    Rules:
+    - If d < 0: return sigma_min (treat as d = 0.0).
+    - If d > d_max: return sigma_max (saturation / out-of-range clamp).
+    - Guard sigma_min > 0 and sigma_max >= sigma_min to prevent zero divisions or negative ratios.
+    """
+    if sigma_min <= 0.0:
+        sigma_min = 1e-6
+    if sigma_max < sigma_min:
+        sigma_max = sigma_min
+    if d_max <= 0.0:
+        return float(sigma_min)
+
+    if d <= 0.0:
+        return float(sigma_min)
+    if d >= d_max:
+        return float(sigma_max)
+
+    ratio = sigma_max / sigma_min
+    exponent = d / d_max
+    return float(sigma_min * (ratio ** exponent))
+
+
 @dataclass
 class MeasurementConfig:
     """Configuration for a single measurement axis."""
@@ -23,6 +61,26 @@ class MeasurementConfig:
     bias: float = 0.0
     sigma: float = 0.0
     error_definition: ErrorDefinition = ErrorDefinition.ONE_SIGMA
+    sigma_min: Optional[float] = None
+    sigma_max: Optional[float] = None
+    d_max: Optional[float] = None
+
+    def get_sigma(self, distance: Optional[float] = None) -> float:
+        """Resolve standard deviation, using parametric model if configured."""
+        if (
+            distance is not None
+            and self.sigma_min is not None
+            and self.sigma_max is not None
+            and self.d_max is not None
+            and self.d_max > 0
+        ):
+            return compute_parametric_range_noise(
+                d=distance,
+                sigma_min=self.sigma_min,
+                sigma_max=self.sigma_max,
+                d_max=self.d_max,
+            )
+        return self.sigma
 
 
 @dataclass
@@ -70,9 +128,10 @@ class MeasurementModel:
         Returns:
             MeasurementSample with noisy measurements.
         """
-        range_noise = rng.normal(0, self.range_config.sigma)
-        angle_noise_h = rng.normal(0, self.angular_config.sigma)
-        angle_noise_v = rng.normal(0, self.angular_config.sigma)
+        range_sigma = self.range_config.get_sigma(true_range)
+        range_noise = rng.normal(0, range_sigma)
+        angle_noise_h = rng.normal(0, self.angular_config.get_sigma(true_range))
+        angle_noise_v = rng.normal(0, self.angular_config.get_sigma(true_range))
 
         return MeasurementSample(
             measured_range=true_range + self.range_config.bias + range_noise,

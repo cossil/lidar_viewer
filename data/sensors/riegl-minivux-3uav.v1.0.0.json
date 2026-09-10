@@ -18,13 +18,19 @@
       "provenance": null
     },
     "maximum": {
-      "value": 330,
+      "value": 120,
       "unit": "m",
       "origin": "SOURCE",
       "status": "known",
       "definition": null,
       "conditions": null,
       "provenance": null
+    },
+    "max_representable_range": {
+      "value": 330,
+      "unit": "m",
+      "origin": "SOURCE",
+      "status": "known"
     },
     "reflectivity_curves": []
   },
@@ -41,7 +47,26 @@
     "angular": null,
     "definition": null
   },
-  "precision": null,
+  "precision": {
+    "range": {
+      "value": 0.01,
+      "unit": "m",
+      "origin": "SOURCE",
+      "status": "known"
+    },
+    "range_min": {
+      "value": 0.008,
+      "unit": "m",
+      "origin": "SOURCE",
+      "status": "known"
+    },
+    "range_max_10pct": {
+      "value": 0.015,
+      "unit": "m",
+      "origin": "SOURCE",
+      "status": "known"
+    }
+  },
   "angular": null,
   "beam": {
     "horizontal_divergence": {
@@ -66,6 +91,7 @@
   },
   "scan": {
     "type": "mechanical_spinning",
+    "returns_per_pulse": 5,
     "point_rate": {
       "value": 200000,
       "unit": "Hz",

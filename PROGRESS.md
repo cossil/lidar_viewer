@@ -133,3 +133,9 @@ Modules:
 - [x] **Error envelope (§25)** — RESOLVED: Standard error envelope `{"error": {"code", "message", "field", "details"}}`.
 - [x] **Simulation modes (§54)** — RESOLVED: `monte_carlo`, `analytical` (deterministic), and `synthetic_point_cloud`.
 - [x] **Immutable sensor versioning (Rule 9)** — RESOLVED: `<id>.v<version>.json` + `<id>.latest` sidecars.
+- [x] **Standardized 10% Lambertian Range & Parametric Noise Model (D028)** — RESOLVED:
+  - Standardized `range.maximum` to 10% Lambertian reflectivity across forms and physics calculations.
+  - Added `range.max_representable_range` as an informational/ceiling field (excluded from simulation math).
+  - Added `# of returns` (`scan.returns_per_pulse`) and integrated multi-return echo recording into `SingleTrialEngine`.
+  - Implemented Generalized Exponential Range Noise Model $\sigma(d) = \sigma_{\min} \cdot (\sigma_{\max} / \sigma_{\min})^{d / d_{\max}}$ with boundary clamping and robust error guards.
+  - Fully updated frontend forms, sensor inspection tables, canonical sensor library, and unit test suites (259 passing tests).

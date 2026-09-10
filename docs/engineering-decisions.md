@@ -91,4 +91,25 @@ Datasheet extraction supports optional LLM-assisted parsing via OpenRouter using
 ## D027 - Native PDF Ingestion & Reasoning-Model Code Block Stripping
 - Integrated `pypdf` for parsing multi-page manufacturer PDF documents without external converters.
 - Reasoning models like `z-ai/glm-5.3-flash` produce Markdown code block fences (```` ```json ````); implemented `_parse_json_content` to safely strip these blocks and prevent `JSONDecodeError`.
-- Enforces standard parameter provenance (`origin: "SOURCE"`, `status: "known"`, `validation: {"status": "unvalidated"}`) allowing extracted sensor candidates to validate directly as strict Pydantic `Sensor` instances.
+- Enforces standard parameter provenance (`origin: "SOURCE"`, `status: "known"`, `validation: {"status": "unvalidated"}`) allowing extracted sensor candidates to validate directly as strict Pydantic `Sensor` instances.
+
+## D028 - Standardized 10% Lambertian Range & Generalized Exponential Parametric Range Noise Model
+1. **Range Standard @ 10% Lambertian Reflectivity**:
+   - For uniform comparison between sensors, `range.maximum` ($d_{\max}$) in forms and simulation calculations must represent the sensor's maximum range under 10% Lambertian target reflectivity ($\rho = 0.10$).
+2. **Informational Max Representable Range**:
+   - Added `range.max_representable_range` as an informational/ceiling parameter representing protocol/data word ceiling. This parameter is strictly excluded from primary simulation calculations and detection envelope math.
+3. **Multi-Return Resolution (`returns_per_pulse`)**:
+   - Added `scan.returns_per_pulse` to sensor specifications. Incorporates multi-echo returns into `SingleTrialEngine` for partial laser footprint hits ($G < 1.0$) and increases effective returns $\bar{N}$.
+4. **Parametric Range Noise Model**:
+   - Replaced static range precision with Generalized Exponential Range Noise:
+     $$\sigma(d) = \sigma_{\min} \cdot \left( \frac{\sigma_{\max}}{\sigma_{\min}} \right)^{\frac{d}{d_{\max}}}$$
+   - Parameters:
+     - $d$: measurement distance (m).
+     - $\sigma_{\min}$ (`precision.range_min`): minimum standard deviation / noise floor at $d=0$ (m).
+     - $\sigma_{\max}$ (`precision.range_max_10pct`): standard deviation at maximum range $d_{\max}$ under 10% reflectivity (m).
+     - $d_{\max}$ (`range.maximum`): maximum range @ 10% reflectivity (m).
+   - Execution rules:
+     - If $d < 0 \implies \sigma(d) = \sigma_{\min}$.
+     - If $d > d_{\max} \implies \sigma(d) = \sigma_{\max}$ (saturation/out-of-range clamp).
+     - Safe guards enforce $\sigma_{\min} > 0$ and $\sigma_{\max} \ge \sigma_{\min}$.
+

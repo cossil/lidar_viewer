@@ -26,6 +26,7 @@
       "conditions": null,
       "provenance": null
     },
+    "max_representable_range": null,
     "reflectivity_curves": []
   },
   "accuracy": {
@@ -88,7 +89,8 @@
     "horizontal_resolution": null,
     "vertical_resolution": null,
     "scan_phase": null,
-    "coverage_model": null
+    "coverage_model": null,
+    "returns_per_pulse": 1
   },
   "optical": null,
   "detection": null,

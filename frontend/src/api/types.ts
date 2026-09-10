@@ -28,6 +28,7 @@ export interface Sensor {
   range?: {
     maximum?: ParameterValue<number>;
     minimum?: ParameterValue<number>;
+    max_representable_range?: ParameterValue<number>;
     reflectivity_curves?: any[];
   };
   accuracy?: {
@@ -39,6 +40,8 @@ export interface Sensor {
   };
   precision?: {
     range?: ParameterValue<number>;
+    range_min?: ParameterValue<number>;
+    range_max_10pct?: ParameterValue<number>;
     angular?: ParameterValue<number>;
     angular_horizontal?: ParameterValue<number>;
     angular_vertical?: ParameterValue<number>;
@@ -63,6 +66,7 @@ export interface Sensor {
     rotation_frequency?: ParameterValue<number>;
     frame_rate?: ParameterValue<number>;
     channels?: number;
+    returns_per_pulse?: number;
   };
   validation?: {
     status: 'unvalidated' | 'provisional' | 'validated' | 'deprecated';

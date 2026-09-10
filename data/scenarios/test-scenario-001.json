@@ -1,7 +1,7 @@
 {
   "scenario_id": "test-scenario-001",
   "name": null,
-  "sensor_id": "riegl-minivux-3uav",
+  "sensor_id": "hesai-qt64",
   "sensor_pose": {
     "position": [
       0.0,

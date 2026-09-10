@@ -19,6 +19,7 @@ class Range(BaseModel):
 
     minimum: Optional[Parameter] = None
     maximum: Optional[Parameter] = None
+    max_representable_range: Optional[Parameter] = None
     reflectivity_curves: List["RangeCurve"] = Field(default_factory=list)
 
 
@@ -48,6 +49,8 @@ class Precision(BaseModel):
     model_config = ConfigDict(extra="forbid", validate_assignment=True)
 
     range: Optional[Parameter] = None
+    range_min: Optional[Parameter] = None
+    range_max_10pct: Optional[Parameter] = None
     angular: Optional[Parameter] = None
     definition: Optional[str] = None
 
@@ -90,6 +93,7 @@ class Scan(BaseModel):
     vertical_resolution: Optional[Parameter] = None
     scan_phase: Optional[Parameter] = None
     coverage_model: Optional[str] = None
+    returns_per_pulse: Optional[int] = Field(default=1, ge=1)
 
 
 class Optical(BaseModel):
